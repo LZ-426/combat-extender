@@ -113,21 +113,21 @@ local function OnSessionLoaded()
             local healthSettings = {
                 Allies = {},
                 Bosses = {
+                    GlobalHealthMultiplier = MCMGet("Health_Multiplier_Base"),
                     HealthMultiplier = MCMGet("Bosses_HealthMultiplier"),
-                    StaticBoost = MCMGet("Bosses_StaticBoost"),
                     HealthPerLevel = MCMGet("Bosses_HealthPerLevel")
                 },
                 Enemies = {
+                    GlobalHealthMultiplier = MCMGet("Health_Multiplier_Base"),
                     HealthMultiplier = MCMGet("Enemies_HealthMultiplier"),
-                    StaticBoost = MCMGet("Enemies_StaticBoost"),
                     HealthPerLevel = MCMGet("Enemies_HealthPerLevel")
                 }
             }
 
             if MCMGet("Enable_Allies_Health_Overrides") then
                 healthSettings.Allies = {
+                    GlobalHealthMultiplier = MCMGet("Health_Multiplier_Base"),
                     HealthMultiplier = MCMGet("Allies_HealthMultiplier"),
-                    StaticBoost = MCMGet("Allies_StaticBoost"),
                     HealthPerLevel = MCMGet("Allies_HealthPerLevel")
                 }
             end
@@ -695,25 +695,18 @@ local function OnSessionLoaded()
         end
 
         local healthMultiplier = tonumber(healthConfig["HealthMultiplier"])
+        local healthPerLevel = tonumber(healthConfig["HealthPerLevel"])
+        local playerLevel = GetPartyLevel()
+
+        healthMultiplier = healthMultiplier + (healthPerLevel * playerLevel)
 
         -- Check if Party Scaling is configured
         if healthConfig["HealthMultiplierPartyScaling"] then
             local partySize = GetPartySize()
-            if partySize <= 4 then
-                return
-            end
             local partyScalingMultiplier = tonumber(healthConfig["HealthMultiplierPartyScaling"])
-            healthMultiplier = partyScalingMultiplier * partySize
-        end
-
-        -- For healthMultiplier 0 equals level-based scaling
-        if healthMultiplier == 0 then
-            local playerLevel = GetPartyLevel()
-            local staticBoost = tonumber(healthConfig["StaticBoost"])
-            local healthPerLevel = tonumber(healthConfig["HealthPerLevel"])
-            healthMultiplier = 1 + staticBoost + healthPerLevel * playerLevel
-        elseif healthMultiplier == 1 then -- Check if the configuration is enabled for this type of character as 1 equals no change
-            return
+            if partyScalingMultiplier > 0 then
+                healthMultiplier = partyScalingMultiplier * partySize
+            end
         end
 
         -- Get the character's current max health and the boost parameters
@@ -763,33 +756,25 @@ local function OnSessionLoaded()
         end
 
         if not EntityHealth[guid] then
-            local baseHealth
-            local healthToUse
-
             -- Check if there is a health override for the entity in the configuration
             if ConfigTable.Overrides and ConfigTable.Overrides[guid] and ConfigTable.Overrides[guid].HealthOverride then
-                healthToUse = ConfigTable.Overrides[guid].HealthOverride
+                EntityHealth[guid] = ConfigTable.Overrides[guid].HealthOverride
             else
-                local entity = Ext.Entity.Get(guid)
-                if not (entity and entity.BaseHp and entity.BaseHp.Vitality) then -- Early return if the entity or BaseHp.Vitality is not available
-                    return
-                end
-
-                baseHealth = entity.BaseHp.Vitality
-
                 if isProgressionBoosted and currentMaxHealth < 100 then
-                    healthToUse = currentMaxHealth
+                    EntityHealth[guid] = currentMaxHealth
                 else
-                    healthToUse = baseHealth
+                    local entity = Ext.Entity.Get(guid)
+                    if not (entity and entity.BaseHp and entity.BaseHp.Vitality) then -- Early return if the entity or BaseHp.Vitality is not available
+                        return
+                    end
+                    EntityHealth[guid] = entity.BaseHp.Vitality
                 end
             end
-
-            EntityHealth[guid] = healthToUse
         end
 
-        local healthToUse = EntityHealth[guid]
-        local desiredMaxHealth = math.ceil(healthToUse * healthMultiplier)
-        local hpIncrease = desiredMaxHealth - healthToUse
+        local baseMaxHealth = EntityHealth[guid] * healthConfig["GlobalHealthMultiplier"])
+        local desiredMaxHealth = math.ceil(baseMaxHealth  * healthMultiplier)
+        local hpIncrease = desiredMaxHealth - baseMaxHealth
         --print(string.format("DEBUG: Target: %s, Name: %s, healthToUse: %s, currentMaxHealth: %s, desiredMaxHealth: %s", guid, handle, healthToUse, currentMaxHealth, desiredMaxHealth))
         --print(string.format("DEBUG: Target: %s, Name: %s, isBoosted: %s, isReset: %s, isProgressionBoosted: %s", guid, handle, isBoosted, isReset, isProgressionBoosted))
 

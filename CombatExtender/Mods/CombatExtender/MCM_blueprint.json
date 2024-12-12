@@ -21,7 +21,7 @@
                             "Type": "checkbox",
                             "Default": false,
                             "Tooltip": "Enable or disable the use of MCM settings",
-                            "Description": "Enable or disable the use of MCM settings. If disabled, the\ncombatextender.json config will be used, otherwise it will be\noverwritten by the MCM settings.",
+                            "Description": "Enable or disable the use of MCM settings. If disabled, the combatextender.json\nconfig will be used, otherwise it will be overwritten by the MCM settings.",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                                 "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
@@ -32,12 +32,24 @@
                 {
                     "SectionId": "health",
                     "SectionName": "Health",
-                    "SectionDescription": "---     Health Multiplier Party Scaling     ---",
+                    "SectionDescription": "---     Health Scaling     ---",
                     "Handles": {
                         "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                         "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
                     },
                     "Settings": [
+                        {
+                            "Id": "Health_Multiplier_Base",
+                            "Name": "Global Health Multiplier",
+                            "Type": "slider_float",
+                            "Default": 1.0,
+                            "Options": {
+                                "Min": 0.01,
+                                "Max": 5
+                            },
+                            "Tooltip": "A health multiplier applied to all enemies/bosses before any other calculations.",
+                            "Description": "All enemies and bosses will have their max HP values multiplied by this value\nbefore any other scaling is applied. Use this to set the base HP numbers that\nall other multipliers should be applied to. Set this to 1.0 for Balanced\ndifficulty HP levels, 1.3 for Tactician, or whatever other base scaling you'd\nprefer."
+                        },
                         {
                             "Id": "Health_Multiplier_Party_Scaling",
                             "Name": "Health Multiplier Party Scaling",
@@ -48,15 +60,15 @@
                                 "Max": 2
                             },
                             "Tooltip": "Scale health based on the size of the party",
-                            "Description": "If this value is not 0, Health multiplier scaling will be used, scaling\nAllies, Enemies, Boss health based on the size of the party with your\ngiven scaling multiplier, healthMultiplier = partyScalingMultiplier *\npartySize. 0.333 is a good place to start.\n---                      ALLIES                      ---"
+                            "Description": "All allies, enemies, and bosses will have their health scaled by this value\nmultiplied by the number of characters in the party. Setting this value to 0\ndisables this feature.\n\n---                      ALLIES                      ---"
                         },
                         {
                             "Id": "Enable_Allies_Health_Overrides",
                             "Name": "Enable Allies Health Overrides",
                             "Type": "checkbox",
                             "Default": false,
-                            "Tooltip": "Enable this to use the custom health settings for allies. If not checked, enemies' settings will be used.",
-                            "Description": "Enable this to use the custom health settings for allies. If not\nchecked, enemies' settings will be used",
+                            "Tooltip": "Enable this to use the custom health settings for allies.",
+                            "Description": "If checked, allies will have their health scaled by custom values defined below.\nIf unchecked, allies will have their health scaled by the values used for enemies.",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                                 "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
@@ -64,36 +76,25 @@
                         },
                         {
                             "Id": "Allies_HealthMultiplier",
-                            "Name": "Allies Health Multiplier",
+                            "Name": "Allies Base Health Multiplier",
                             "Type": "slider_float",
                             "Default": 0.0,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 10.0
                             },
-                            "Tooltip": "Multiplier for allies' health."
-                        },
-                        {
-                            "Id": "Allies_StaticBoost",
-                            "Name": "Allies Static Boost",
-                            "Type": "slider_float",
-                            "Default": 0.0,
-                            "Options": {
-                                "Min": 0.0,
-                                "Max": 10.0
-                            },
-                            "Tooltip": "Static boost for allies' health."
+                            "Tooltip": "Base health multiplier for allies."
                         },
                         {
                             "Id": "Allies_HealthPerLevel",
-                            "Name": "Allies Health Per Level",
+                            "Name": "Allies Health Multiplier Per Level",
                             "Type": "slider_float",
                             "Default": 0.0,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 1.0
                             },
-                            "Tooltip": "Health increase per level for allies.",
+                            "Tooltip": "Health multiplier increase per level for allies.",
                             "Description": "---                      BOSSES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -102,36 +103,25 @@
                         },
                         {
                             "Id": "Bosses_HealthMultiplier",
-                            "Name": "Bosses Health Multiplier",
+                            "Name": "Bosses Base Health Multiplier",
                             "Type": "slider_float",
                             "Default": 0.0,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 10.0
                             },
-                            "Tooltip": "Multiplier for bosses' health."
-                        },
-                        {
-                            "Id": "Bosses_StaticBoost",
-                            "Name": "Bosses Static Boost",
-                            "Type": "slider_float",
-                            "Default": 0.3,
-                            "Options": {
-                                "Min": 0.0,
-                                "Max": 10.0
-                            },
-                            "Tooltip": "Static boost for bosses' health."
+                            "Tooltip": "Base health multiplier for bosses."
                         },
                         {
                             "Id": "Bosses_HealthPerLevel",
-                            "Name": "Bosses Health Per Level",
+                            "Name": "Bosses Health Multiplier Per Level",
                             "Type": "slider_float",
                             "Default": 0.02,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 1.0
                             },
-                            "Tooltip": "Health increase per level for bosses.",
+                            "Tooltip": "Health multiplier increase per level for bosses.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -140,37 +130,26 @@
                         },
                         {
                             "Id": "Enemies_HealthMultiplier",
-                            "Name": "Enemies Health Multiplier",
+                            "Name": "Enemies Base Health Multiplier",
                             "Type": "slider_float",
                             "Default": 0.0,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 10.0
                             },
-                            "Tooltip": "Multiplier for enemies' health."
-                        },
-                        {
-                            "Id": "Enemies_StaticBoost",
-                            "Name": "Enemies Static Boost",
-                            "Type": "slider_float",
-                            "Default": 0.3,
-                            "Options": {
-                                "Min": 0.0,
-                                "Max": 10.0
-                            },
-                            "Tooltip": "Static boost for enemies' health."
+                            "Tooltip": "Base health multiplier for enemies."
                         },
                         {
                             "Id": "Enemies_HealthPerLevel",
-                            "Name": "Enemies Health Per Level",
+                            "Name": "Enemies Health Multiplier Per Level",
                             "Type": "slider_float",
                             "Default": 0.01,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 1.0
                             },
-                            "Tooltip": "Health increase per level for enemies.",
-                            "Description": "This is the health scaling part. If you want enemies to scale based on\nthe level of the player use this. 'HealthMultiplier' has to be 0 to\nactivate scaling based on player level. If you want static multipliers,\nset 'Enemies Health Multiplier' to a value greater than 0 and set boost\nand set StaticBoost and HealthPerLevel to 0.",
+                            "Tooltip": "Health multiplier increase per level for enemies.",
+                            "Description": "These values adjust the scaling of ally, enemy, and boss health pools. These\nmultipliers are applied on top of the global multiplier at the top of this\nsection. The calculation is:\nhealth = (balancedDifficultyHealth * globalHealthMultiplier) * (baseMult + (perLevelMult * playerPartyLevel))",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                                 "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
@@ -189,36 +168,36 @@
                     "Settings": [
                         {
                             "Id": "Bosses_StaticDamageBoost",
-                            "Name": "Bosses Static Damage Boost",
+                            "Name": "Bosses Base Damage Boost",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static damage boost for bosses."
+                            "Tooltip": "Base damage boost for bosses."
                         },
                         {
                             "Id": "Bosses_DamagePerIncrement",
-                            "Name": "Bosses Damage Per Increment",
+                            "Name": "Bosses Damage Boost Per Level Increment",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Damage increase per increment for bosses."
+                            "Tooltip": "Damage boost per level increment for bosses."
                         },
                         {
                             "Id": "Bosses_LevelIncrement",
-                            "Name": "Bosses Level Increment",
+                            "Name": "Bosses Damage Level Increment",
                             "Type": "slider_int",
                             "Default": 4,
                             "Options": {
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for bosses' damage.",
+                            "Tooltip": "Level increment for level-based boss damage boost.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -227,37 +206,37 @@
                         },
                         {
                             "Id": "Enemies_StaticDamageBoost",
-                            "Name": "Enemies Static Damage Boost",
+                            "Name": "Enemies Base Damage Boost",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static damage boost for enemies."
+                            "Tooltip": "Base damage boost for enemies."
                         },
                         {
                             "Id": "Enemies_DamagePerIncrement",
-                            "Name": "Enemies Damage Per Increment",
+                            "Name": "Enemies Damage Boost Per Level Increment",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Damage increase per increment for enemies."
+                            "Tooltip": "Damage boost per level increment for enemies."
                         },
                         {
                             "Id": "Enemies_LevelIncrement",
-                            "Name": "Enemies Level Increment",
+                            "Name": "Enemies Damage Level Increment",
                             "Type": "slider_int",
                             "Default": 6,
                             "Options": {
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for enemies' damage.",
-                            "Description": "The blocks here follow a similar structure Here is the calculation:\ntotalBoost = staticBoost + boostPerIncrement * math.floor(targetLevel /\nlevelIncrement) The floor value of a number is the value that is rounded\nto the closest integer less than or equal to that integer Example with a\nlevel 5 target: totalBoost = 1 + 1 * (5 / 4) = 2",
+                            "Tooltip": "Level increment for level-based enemy damage boost.",
+                            "Description": "These values increase the damage dealt by enemies and bosses. The calculation is:\ndamageBoost = baseDamageBoost + (damageBoostPerIncrement * math.floor(targetLevel / levelIncrement))\nThe floor value of a number is the value that is rounded to the closest integer less than or equal to that integer.\nExample with a level 5 target: totalBoost = 1 + 1 * (5 / 4) = 2",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                                 "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
@@ -276,25 +255,25 @@
                     "Settings": [
                         {
                             "Id": "Bosses_ArmourClass_StaticBoost",
-                            "Name": "Bosses Armour Class Static Boost",
+                            "Name": "Bosses Base Armour Class Boost",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for bosses' armour class."
+                            "Tooltip": "Base armor class boost for bosses."
                         },
                         {
                             "Id": "Bosses_ArmourClass_BoostPerIncrement",
-                            "Name": "Bosses Armour Class Boost Per Increment",
+                            "Name": "Bosses Armour Class Boost Per Level Increment",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Boost per increment for bosses' armour class."
+                            "Tooltip": "Armor class boost per level increment for bosses."
                         },
                         {
                             "Id": "Bosses_ArmourClass_LevelIncrement",
@@ -305,7 +284,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for bosses' armour class.",
+                            "Tooltip": "Level increment for level-based boss armor class boost.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -314,25 +293,25 @@
                         },
                         {
                             "Id": "Enemies_ArmourClass_StaticBoost",
-                            "Name": "Enemies Armour Class Static Boost",
+                            "Name": "Enemies Base Armour Class Boost",
                             "Type": "slider_int",
                             "Default": 0,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for enemies' armour class."
+                            "Tooltip": "Base armor class boost for enemies."
                         },
                         {
                             "Id": "Enemies_ArmourClass_BoostPerIncrement",
-                            "Name": "Enemies Armour Class Boost Per Increment",
+                            "Name": "Enemies Armour Class Boost Per Level Increment",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Boost per increment for enemies' armour class."
+                            "Tooltip": "Armor class boost per level increment for enemies."
                         },
                         {
                             "Id": "Enemies_ArmourClass_LevelIncrement",
@@ -343,7 +322,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for enemies' armour class.",
+                            "Tooltip": "Level increment for level-based enemy armor class boost.",
                             "Description": "Refer to the Damage Section description",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -370,7 +349,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for bosses' spell save DC."
+                            "Tooltip": "Base spell save DC boost for bosses."
                         },
                         {
                             "Id": "Bosses_SpellSaveDC_BoostPerIncrement",
@@ -381,7 +360,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Boost per increment for bosses spell save DC."
+                            "Tooltip": "Spell Save DC boost per level increment for bosses."
                         },
                         {
                             "Id": "Bosses_SpellSaveDC_LevelIncrement",
@@ -392,7 +371,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for bosses' spell save DC.",
+                            "Tooltip": "Level increment for level-based boss spell save DC boost.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -408,7 +387,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for enemies' spell save DC."
+                            "Tooltip": "Base spell save DC boost for enemies."
                         },
                         {
                             "Id": "Enemies_SpellSaveDC_BoostPerIncrement",
@@ -419,7 +398,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Boost per increment for enemies' spell save DC."
+                            "Tooltip": "Spell Save DC boost per level increment for enemies."
                         },
                         {
                             "Id": "Enemies_SpellSaveDC_LevelIncrement",
@@ -430,7 +409,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for enemies' spell save DC.",
+                            "Tooltip": "Level increment for level-based enemy spell save DC boost.",
                             "Description": "Refer to the Damage Section description",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -457,7 +436,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for bosses' ability points."
+                            "Tooltip": "Base ability point boost for bosses."
                         },
                         {
                             "Id": "Bosses_AbilityPoints_BoostPerIncrement",
@@ -468,7 +447,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Boost per increment for bosses' ability points."
+                            "Tooltip": "Ability point boost per level increment for bosses."
                         },
                         {
                             "Id": "Bosses_AbilityPoints_LevelIncrement",
@@ -479,7 +458,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for bosses' ability points.",
+                            "Tooltip": "Level increment for level-based boss ability point boost.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -495,7 +474,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for enemies' ability points."
+                            "Tooltip": "Base ability point boost for enemies."
                         },
                         {
                             "Id": "Enemies_AbilityPoints_BoostPerIncrement",
@@ -506,7 +485,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Boost per increment for enemies' ability points."
+                            "Tooltip": "Ability point boost per level increment for enemies."
                         },
                         {
                             "Id": "Enemies_AbilityPoints_LevelIncrement",
@@ -517,7 +496,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for enemies' ability points.",
+                            "Tooltip": "Level increment for level-based enemy ability point boost.",
                             "Description": "I sort enemy abilities by value to find the top 2, and check if\nSpellCastingAbility is one of those. If SpellCastingAbility is not among\nthe top 2, I add it to the list of abilities to boost. In most\nsituations you will see 2 abilities being boosted, but sometimes 3.\nFurthermore I ensure the final ability value is an even number, rounded\nup from what it would have been.",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -537,14 +516,14 @@
                     "Settings": [
                         {
                             "Id": "Bosses_Movement_StaticBoost",
-                            "Name": "Bosses Movement Static Boost",
+                            "Name": "Boss Movement Speed Boost",
                             "Type": "slider_int",
                             "Default": 3,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for bosses' movement.",
+                            "Tooltip": "Flat movement speed boost for bosses.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -553,15 +532,15 @@
                         },
                         {
                             "Id": "Enemies_Movement_StaticBoost",
-                            "Name": "Enemies Movement Static Boost",
+                            "Name": "Enemy Movement Speed Boost",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static boost for enemies' movement.",
-                            "Description": "Movement is in meters.",
+                            "Tooltip": "Flat movement speed boost for enemies.",
+                            "Description": "Movement values are in meters.",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                                 "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
@@ -580,25 +559,25 @@
                     "Settings": [
                         {
                             "Id": "Bosses_ExtraAction_Action_Additional",
-                            "Name": "Bosses Extra Action Additional",
+                            "Name": "Bosses Additional Action",
                             "Type": "slider_int",
                             "Default": 0,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Additional actions for bosses."
+                            "Tooltip": "Bosses receive this many actions on top of what they would normally receive."
                         },
                         {
                             "Id": "Bosses_ExtraAction_BonusAction_Additional",
-                            "Name": "Bosses Extra Bonus Action Additional",
+                            "Name": "Bosses Additional Bonus Action",
                             "Type": "slider_int",
                             "Default": 0,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Additional bonus actions for bosses.",
+                            "Tooltip": "Bosses receive this many bonus actions on top of what they would normally receive.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -607,26 +586,25 @@
                         },
                         {
                             "Id": "Enemies_ExtraAction_Action_Additional",
-                            "Name": "Enemies Extra Action Additional",
+                            "Name": "Enemy Additional Action",
                             "Type": "slider_int",
                             "Default": 0,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Additional actions for enemies."
+                            "Tooltip": "Enemies receive this many actions on top of what they would normally receive."
                         },
                         {
                             "Id": "Enemies_ExtraAction_BonusAction_Additional",
-                            "Name": "Enemies Extra Bonus Action Additional",
+                            "Name": "Enemy Additional Bonus Actions",
                             "Type": "slider_int",
                             "Default": 1,
                             "Options": {
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Additional bonus actions for enemies.",
-                            "Description": "1 means give the target an additional (bonus) action.",
+                            "Tooltip": "Enemies receive this many bonus actions on top of what they would normally receive.",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
                                 "DescriptionHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1c"
@@ -647,7 +625,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static bonus for bosses' attack rolls."
+                            "Tooltip": "Base attack roll bonus for bosses."
                         },
                         {
                             "Id": "Bosses_Rolls_Attack_RollBonusPerIncrement",
@@ -658,7 +636,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Bonus per increment for bosses' attack rolls."
+                            "Tooltip": "Attack roll bonus per level increment for bosses."
                         },
                         {
                             "Id": "Bosses_Rolls_Attack_LevelIncrement",
@@ -669,7 +647,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for bosses' attack rolls."
+                            "Tooltip": "Level increment for level-based boss attack roll bonus."
                         },
                         {
                             "Id": "Bosses_Rolls_SavingThrow_StaticRollBonus",
@@ -680,7 +658,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static bonus for bosses' saving throws."
+                            "Tooltip": "Base saving throw bonus for bosses."
                         },
                         {
                             "Id": "Bosses_Rolls_SavingThrow_RollBonusPerIncrement",
@@ -691,7 +669,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Bonus per increment for bosses' saving throws."
+                            "Tooltip": "Saving throw bonus per level increment for bosses."
                         },
                         {
                             "Id": "Bosses_Rolls_SavingThrow_LevelIncrement",
@@ -702,7 +680,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for bosses' saving throws.",
+                            "Tooltip": "Level increment for level-based boss saving throw bonus.",
                             "Description": "---                      ENEMIES                      ---",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
@@ -718,7 +696,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static bonus for enemies' attack rolls."
+                            "Tooltip": "Base attack roll bonus for enemies."
                         },
                         {
                             "Id": "Enemies_Rolls_Attack_RollBonusPerIncrement",
@@ -729,7 +707,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Bonus per increment for enemies' attack rolls."
+                            "Tooltip": "Attack roll bonus per level increment for enemies."
                         },
                         {
                             "Id": "Enemies_Rolls_Attack_LevelIncrement",
@@ -740,7 +718,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for enemies' attack rolls."
+                            "Tooltip": "Level increment for level-based enemy attack roll boost."
                         },
                         {
                             "Id": "Enemies_Rolls_SavingThrow_StaticRollBonus",
@@ -751,7 +729,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Static bonus for enemies' saving throws."
+                            "Tooltip": "Base saving throw bonus for enemies."
                         },
                         {
                             "Id": "Enemies_Rolls_SavingThrow_RollBonusPerIncrement",
@@ -762,7 +740,7 @@
                                 "Min": 0,
                                 "Max": 10
                             },
-                            "Tooltip": "Bonus per increment for enemies' saving throws."
+                            "Tooltip": "Saving throw bonus per level increment for enemies."
                         },
                         {
                             "Id": "Enemies_Rolls_SavingThrow_LevelIncrement",
@@ -773,7 +751,7 @@
                                 "Min": 1,
                                 "Max": 20
                             },
-                            "Tooltip": "Level increment for enemies' saving throws.",
+                            "Tooltip": "Level increment for level-based enemy saving throw boost.",
                             "Description": "Refering to saving throw settings: These apply to any saving throw. Use\nthis to increase the floor. However primarily use AbilityPoints boosts\nto keep targets unique.",
                             "Handles": {
                                 "NameHandle": "hb4de04cbgd263g4819gb313gd85f95bf6b1b",
