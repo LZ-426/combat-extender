@@ -115,7 +115,7 @@
                             "Id": "Bosses_StaticBoost",
                             "Name": "Bosses Static Boost",
                             "Type": "slider_float",
-                            "Default": 0.1,
+                            "Default": 0.3,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 10.0
@@ -153,7 +153,7 @@
                             "Id": "Enemies_StaticBoost",
                             "Name": "Enemies Static Boost",
                             "Type": "slider_float",
-                            "Default": 0.1,
+                            "Default": 0.3,
                             "Options": {
                                 "Min": 0.0,
                                 "Max": 10.0
