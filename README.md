@@ -1,3 +1,7 @@
+This is a fork of Zehtukae's Combat Extender mod for Baldur's Gate 3. The original is highly flexible and generally quite useful, however, its HP scaling functionality includes a hardcoded 1.3x multiplier to enemy/boss HP intended to mimic the effects of the Tactician difficulty, meaning that functionality cannot be used properly with Explorer/Balanced HP pools. This fork removes the hardcoded scaling and updates the default configuration, producing the same behavior by default while allowing a wider range of user configurations.
+
+------------------------------------------------------
+
 # Baldur's Gate 3 Combat Extender
 Adds extra abilities, spells and other buffs to enemies with easy user configuration. Whereas there are multiple combat mods, they tend to be outdated, abandoned or aren't really suitable for a serious campaign as they randomly give spells and abilities to enemies. This mod allows you to easily adjust and modify enemy abilities, spells and hitpoints while staying true to the original game design. 
 
