@@ -775,7 +775,7 @@ local function OnSessionLoaded()
                     return
                 end
 
-                baseHealth = math.floor(entity.BaseHp.Vitality * 1.3) -- 1.3 multiplier is default for Tactician
+                baseHealth = entity.BaseHp.Vitality
 
                 if isProgressionBoosted and currentMaxHealth < 100 then
                     healthToUse = currentMaxHealth
